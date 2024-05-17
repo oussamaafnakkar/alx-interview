@@ -17,17 +17,11 @@ def process_line(line, total_size, status_counts):
     parts = line.split()
     try:
         status_code = int(parts[-2])
+        file_size = int(parts[-1])
 
         if status_code in [200, 301, 400, 401, 403, 404, 405, 500]:
             status_counts[status_code] += 1
-
-    except (ValueError, IndexError):
-        pass
-
-    try:
-        file_size = int(parts[-1])
-
-        total_size += file_size
+            total_size += file_size
 
     except (ValueError, IndexError):
         pass
