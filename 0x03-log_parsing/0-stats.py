@@ -15,9 +15,9 @@ def print_stats(total_size, status_counts):
 def process_line(line, total_size, status_counts):
     """ Process a line from stdin """
     parts = line.split()
-    
-    # Check if the line has enough parts
-    if len(parts) >= 6:
+
+    # Check if the line has enough parts and the correct format
+    if len(parts) == 6 and parts[3] == "GET" and parts[4] == "/projects/260" and parts[5] == "HTTP/1.1":
         try:
             status_code = int(parts[-2])
             file_size = int(parts[-1])
