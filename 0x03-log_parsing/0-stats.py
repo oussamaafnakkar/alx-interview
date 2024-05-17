@@ -19,7 +19,7 @@ def process_line(line, total_size, status_counts):
     # Check if the line has enough parts and the correct format
     if len(parts) == 6 and parts[3] == "GET" and parts[4] == "/projects/260" and parts[5] == "HTTP/1.1":
         try:
-            status_code = int(parts[-2])
+            status_code = int(parts[4])  # Correct index for status code
             file_size = int(parts[-1])
 
             if status_code in [200, 301, 400, 401, 403, 404, 405, 500]:
