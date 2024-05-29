@@ -5,22 +5,22 @@ def solve_n_queens(n):
     def is_safe(board, row, col):
         for i in range(row):
             if board[i] == col or \
-                board[i] - i == col - row or \
-                board[i] + i == col + row:
+               board[i] - i == col - row or \
+               board[i] + i == col + row:
                 return False
         return True
 
-    def place_queens(n, row, board):
+    def place_queens(n, row, board, result):
         if row == n:
             result.append(board[:])
             return
         for col in range(n):
             if is_safe(board, row, col):
                 board[row] = col
-                place_queens(n, row + 1, board)
+                place_queens(n, row + 1, board, result)
 
     result = []
-    place_queens(n, 0, [-1] * n)
+    place_queens(n, 0, [-1] * n, result)
     return result
 
 if __name__ == "__main__":
@@ -36,6 +36,6 @@ if __name__ == "__main__":
         print("N must be at least 4")
         sys.exit(1)
 
-    solutions = solve_n_queens(n)
+    solutions = solve_n_queens(int(sys.argv[1]))
     for solution in solutions:
-        print([list(enumerate([i for i, x in enumerate(row) if x == col])) for col in range(n)])
+        print([[i, j] for i, j in enumerate(solution)])
