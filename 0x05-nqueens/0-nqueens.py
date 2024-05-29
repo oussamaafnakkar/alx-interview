@@ -1,59 +1,59 @@
 #!/usr/bin/python3
-"""doc doc doc"""
+"""N Queens"""
 import sys
 
 
-def solve_queens_problem(board_size):
-    """doc doc doc"""
+def print_board(board, n):
+    """Print allocated positions to the queen"""
+    b = []
 
-    def is_valid_position(pos, occupied_pos):
-        """doc doc doc"""
-        for i in range(len(occupied_pos)):
-            if (
-                occupied_pos[i] == pos or
-                occupied_pos[i] - i == pos - len(occupied_pos) or
-                occupied_pos[i] + i == pos + len(occupied_pos)
-            ):
-                return False
-        return True
-
-    def place_queens(board_size, index, occupied_pos, solutions):
-        """doc doc doc"""
-        if index == board_size:
-            solutions.append(occupied_pos[:])
-            return
-
-        for i in range(board_size):
-            if is_valid_position(i, occupied_pos):
-                occupied_pos.append(i)
-                place_queens(board_size, index + 1, occupied_pos, solutions)
-                occupied_pos.pop()
-
-    solutions = []
-    place_queens(board_size, 0, [], solutions)
-    return solutions
+    for i in range(n):
+        for j in range(n):
+            if j == board[i]:
+                b.append([i, j])
+    print(b)
 
 
-def main():
-    """doc doc doc"""
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-
-    try:
-        board_size = int(sys.argv[1])
-    except ValueError:
-        print("N must be a number")
-        sys.exit(1)
-
-    if board_size < 4:
-        print("N must be at least 4")
-        sys.exit(1)
-
-    solutions = solve_queens_problem(board_size)
-    for solution in solutions:
-        print([[i, solution[i]] for i in range(len(solution))])
+def is_position_safe(board, i, j, r):
+    """Checks if the position is safe for the queen"""
+    return board[i] in (j, j - i + r, i - r + j)
 
 
-if __name__ == "__main__":
-    main()
+def safe_positions(board, row, n):
+    """Find all safe positions where the queen can be allocated"""
+    if row == n:
+        print_board(board, n)
+
+    else:
+        for j in range(n):
+            allowed = True
+            for i in range(row):
+                if is_position_safe(board, i, j, row):
+                    allowed = False
+            if allowed:
+                board[row] = j
+                safe_positions(board, row + 1, n)
+
+
+def create_board(size):
+    """Generates the board"""
+    return [0 * size for i in range(size)]
+
+
+if len(sys.argv) != 2:
+    print("Usage: nqueens N")
+    exit(1)
+
+try:
+    n = int(sys.argv[1])
+except BaseException:
+    print("N must be a number")
+    exit(1)
+
+if (n < 4):
+    print("N must be at least 4")
+    exit(1)
+
+board = create_board(int(n))
+row = 0
+safe_positions(board, row, int(n))
